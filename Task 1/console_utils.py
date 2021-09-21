@@ -31,12 +31,22 @@ def read_menu_item(menu_name: str, menu_items: list[str]) -> int:
     return index - 1
 
 
-def safe_int_input(input_text: str = "Введите целочисленное значение: ", error_message: str = "Не удалось распознать целочисленное значение.") -> int:
+def is_whole(raw_number: str):
+    try:
+        int(raw_number)
+        return True
+    except ValueError:
+        return False
+
+
+def safe_int_input(input_text: str = "Введите целочисленное значение: ", error_message: str = "Не удалось распознать целочисленное значение.", min_value: int = None, max_value: int = None) -> int:
     while True:
         print(input_text, end='')
         result = input()
-        if result.isnumeric():
-            return int(result)
+        if is_whole(result):
+            num = int(result)
+            if (min_value is None or num >= min_value) and (max_value is None or num <= max_value):
+                return num
         print(error_message)
 
 
@@ -51,9 +61,8 @@ def enumerate_lines_from_console() -> Iterable[str]:
 def get_numeric_matrix_from_console(input_text: str = "Введите целочисленную матрицу:", error_message: str = "Не удалось распознать матрицу.") -> list[list[int]]:
     while True:
         print(input_text)
-        str_matrix = [line.split(' ')
-                      for line in enumerate_lines_from_console()]
-        all_is_numeric = all(all(cell.isnumeric()
+        str_matrix = [line.split() for line in enumerate_lines_from_console()]
+        all_is_numeric = all(all(is_whole(cell)
                              for cell in row) for row in str_matrix)
         is_rectangular_2d_array = True if len(
             set(len(row) for row in str_matrix)) == 1 else False

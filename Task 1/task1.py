@@ -4,14 +4,15 @@ from console_utils import *
 
 
 def read_random_numeric_matrix_from_console() -> list[list[int]]:
-    rows_count = safe_int_input("Введите число строк: ")
-    colums_count = safe_int_input("Введите число столбцов: ")
+    rows_count = safe_int_input("Введите число строк: ", "Число должно быть строго положительным.", 1)
+    colums_count = safe_int_input("Введите число столбцов: ", "Число должно быть строго положительным.", 1)
     min_value = safe_int_input(
         "Введите минимальное значение элемента матрицы: ")
     max_value = safe_int_input(
         "Введите максимальное значение элемента матрицы: ")
-        
-    matrix = generate_random_numeric_matrix(rows_count, colums_count, min_value, max_value)
+
+    matrix = generate_random_numeric_matrix(
+        rows_count, colums_count, min_value, max_value)
 
     print("Сгенерированная матрица: ")
     print(matrix_to_string(matrix))
@@ -42,8 +43,10 @@ def main(argv: str):
     matrix = GENERATE_MATRIX_ACTION[input_type_index]()
 
     print("Результат: ")
-    print("Сумма элементов выше побочной диагонали:", sum(iterate_upper_left_triangle(matrix, False)))
-    print("Сумма элементов ниже побочной диагонали:", sum(iterate_down_right_triangle(matrix, False)))
+    print("Сумма элементов выше побочной диагонали:",
+          sum(iterate_upper_left_triangle(matrix, False)))
+    print("Сумма элементов ниже побочной диагонали:",
+          sum(iterate_down_right_triangle(matrix, False)))
 
     return 0
 
